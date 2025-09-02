@@ -1,0 +1,532 @@
+'use strict'
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    // 插入字典项数据
+    await queryInterface.bulkInsert('dictionary_items', [
+      // 房源类型
+      {
+        dictionary_code: 'property_type',
+        key: 'apartment',
+        value: '公寓',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'apartment', color: '#1890ff' }),
+        description: '现代化公寓住宅',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_type',
+        key: 'house',
+        value: '别墅',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'house', color: '#52c41a' }),
+        description: '独栋别墅住宅',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_type',
+        key: 'villa',
+        value: '联排别墅',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'villa', color: '#722ed1' }),
+        description: '联排式别墅住宅',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_type',
+        key: 'studio',
+        value: '单间公寓',
+        parent_id: null,
+        level: 0,
+        sort_order: 4,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'studio', color: '#fa8c16' }),
+        description: '开放式单间公寓',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_type',
+        key: 'loft',
+        value: 'LOFT公寓',
+        parent_id: null,
+        level: 0,
+        sort_order: 5,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'loft', color: '#eb2f96' }),
+        description: '复式LOFT公寓',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_type',
+        key: 'office',
+        value: '写字楼',
+        parent_id: null,
+        level: 0,
+        sort_order: 6,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'office', color: '#13c2c2' }),
+        description: '商务写字楼',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+
+      // 房源状态
+      {
+        dictionary_code: 'property_status',
+        key: 'available',
+        value: '可租',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#52c41a', badge: 'success' }),
+        description: '房源可供出租',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_status',
+        key: 'rented',
+        value: '已租',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#f5222d', badge: 'error' }),
+        description: '房源已被租出',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_status',
+        key: 'maintenance',
+        value: '维护中',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#fa8c16', badge: 'warning' }),
+        description: '房源正在维护',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'property_status',
+        key: 'offline',
+        value: '下架',
+        parent_id: null,
+        level: 0,
+        sort_order: 4,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#d9d9d9', badge: 'default' }),
+        description: '房源已下架',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+
+      // 城市列表（示例：北京、上海、深圳）
+      {
+        dictionary_code: 'city_list',
+        key: 'beijing',
+        value: '北京市',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ code: '110000', pinyin: 'beijing' }),
+        description: '中华人民共和国首都',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'city_list',
+        key: 'shanghai',
+        value: '上海市',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ code: '310000', pinyin: 'shanghai' }),
+        description: '中国经济中心城市',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'city_list',
+        key: 'shenzhen',
+        value: '深圳市',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ code: '440300', pinyin: 'shenzhen' }),
+        description: '中国改革开放窗口城市',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+
+      // 房源设施
+      {
+        dictionary_code: 'amenity_type',
+        key: 'air_conditioning',
+        value: '空调',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'air-conditioning', category: 'appliance' }),
+        description: '空调设备',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'amenity_type',
+        key: 'washing_machine',
+        value: '洗衣机',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'washing-machine', category: 'appliance' }),
+        description: '洗衣机设备',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'amenity_type',
+        key: 'refrigerator',
+        value: '冰箱',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'refrigerator', category: 'appliance' }),
+        description: '冰箱设备',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'amenity_type',
+        key: 'wifi',
+        value: 'WiFi',
+        parent_id: null,
+        level: 0,
+        sort_order: 4,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'wifi', category: 'network' }),
+        description: '无线网络',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'amenity_type',
+        key: 'parking',
+        value: '停车位',
+        parent_id: null,
+        level: 0,
+        sort_order: 5,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'parking', category: 'facility' }),
+        description: '停车位设施',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'amenity_type',
+        key: 'elevator',
+        value: '电梯',
+        parent_id: null,
+        level: 0,
+        sort_order: 6,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ icon: 'elevator', category: 'facility' }),
+        description: '电梯设施',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+
+      // 合同状态
+      {
+        dictionary_code: 'contract_status',
+        key: 'draft',
+        value: '草稿',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#d9d9d9', badge: 'default' }),
+        description: '合同草稿状态',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'contract_status',
+        key: 'pending',
+        value: '待签署',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#fa8c16', badge: 'warning' }),
+        description: '等待签署状态',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'contract_status',
+        key: 'active',
+        value: '生效中',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#52c41a', badge: 'success' }),
+        description: '合同生效状态',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'contract_status',
+        key: 'expired',
+        value: '已到期',
+        parent_id: null,
+        level: 0,
+        sort_order: 4,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#f5222d', badge: 'error' }),
+        description: '合同已到期',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'contract_status',
+        key: 'terminated',
+        value: '已终止',
+        parent_id: null,
+        level: 0,
+        sort_order: 5,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#722ed1', badge: 'purple' }),
+        description: '合同已终止',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+
+      // 付款方式
+      {
+        dictionary_code: 'payment_method',
+        key: 'monthly',
+        value: '月付',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ months: 1, popular: true }),
+        description: '按月支付租金',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'payment_method',
+        key: 'quarterly',
+        value: '季付',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ months: 3, popular: true }),
+        description: '按季度支付租金',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'payment_method',
+        key: 'semi_annually',
+        value: '半年付',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ months: 6, popular: false }),
+        description: '按半年支付租金',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'payment_method',
+        key: 'annually',
+        value: '年付',
+        parent_id: null,
+        level: 0,
+        sort_order: 4,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ months: 12, popular: false }),
+        description: '按年支付租金',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+
+      // 用户状态
+      {
+        dictionary_code: 'user_status',
+        key: 'active',
+        value: '激活',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#52c41a', badge: 'success' }),
+        description: '用户账户正常激活',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'user_status',
+        key: 'inactive',
+        value: '未激活',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#fa8c16', badge: 'warning' }),
+        description: '用户账户未激活',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'user_status',
+        key: 'banned',
+        value: '已禁用',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: true,
+        extra_data: JSON.stringify({ color: '#f5222d', badge: 'error' }),
+        description: '用户账户已被禁用',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+
+      // 装修程度
+      {
+        dictionary_code: 'decoration_level',
+        key: 'rough',
+        value: '毛坯',
+        parent_id: null,
+        level: 0,
+        sort_order: 1,
+        status: 'active',
+        is_system: false,
+        extra_data: JSON.stringify({ color: '#d9d9d9' }),
+        description: '毛坯房，未装修',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'decoration_level',
+        key: 'simple',
+        value: '简装',
+        parent_id: null,
+        level: 0,
+        sort_order: 2,
+        status: 'active',
+        is_system: false,
+        extra_data: JSON.stringify({ color: '#fa8c16' }),
+        description: '简单装修',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'decoration_level',
+        key: 'fine',
+        value: '精装',
+        parent_id: null,
+        level: 0,
+        sort_order: 3,
+        status: 'active',
+        is_system: false,
+        extra_data: JSON.stringify({ color: '#52c41a' }),
+        description: '精装修房',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        dictionary_code: 'decoration_level',
+        key: 'luxury',
+        value: '豪装',
+        parent_id: null,
+        level: 0,
+        sort_order: 4,
+        status: 'active',
+        is_system: false,
+        extra_data: JSON.stringify({ color: '#722ed1' }),
+        description: '豪华装修',
+        created_at: new Date(),
+        updated_at: new Date()
+      }
+    ])
+  },
+
+  async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete('dictionary_items', {
+      dictionary_code: {
+        [Sequelize.Op.in]: [
+          'property_type',
+          'property_status',
+          'city_list',
+          'amenity_type',
+          'contract_status',
+          'payment_method',
+          'user_status',
+          'decoration_level'
+        ]
+      }
+    })
+  }
+}
