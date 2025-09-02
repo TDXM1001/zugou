@@ -154,6 +154,118 @@ const options = {
             }
           }
         },
+        Contract: {
+          type: 'object',
+          required: ['landlordId', 'tenantId', 'propertyId', 'title', 'monthlyRent', 'signedDate', 'effectiveDate', 'expiryDate', 'leaseDuration'],
+          properties: {
+            id: {
+              type: 'integer',
+              description: '合同ID'
+            },
+            contractNumber: {
+              type: 'string',
+              description: '合同编号',
+              example: 'CT20241201001'
+            },
+            landlordId: {
+              type: 'integer',
+              description: '房东ID'
+            },
+            tenantId: {
+              type: 'integer',
+              description: '租客ID'
+            },
+            propertyId: {
+              type: 'integer',
+              description: '房源ID'
+            },
+            title: {
+              type: 'string',
+              description: '合同标题',
+              minLength: 5,
+              maxLength: 200
+            },
+            description: {
+              type: 'string',
+              description: '合同描述'
+            },
+            monthlyRent: {
+              type: 'integer',
+              description: '月租金（分）',
+              minimum: 1
+            },
+            deposit: {
+              type: 'integer',
+              description: '押金（分）',
+              minimum: 0
+            },
+            managementFee: {
+              type: 'integer',
+              description: '管理费（分）',
+              minimum: 0
+            },
+            otherFees: {
+              type: 'integer',
+              description: '其他费用（分）',
+              minimum: 0
+            },
+            signedDate: {
+              type: 'string',
+              format: 'date',
+              description: '签约日期'
+            },
+            effectiveDate: {
+              type: 'string',
+              format: 'date',
+              description: '生效日期'
+            },
+            expiryDate: {
+              type: 'string',
+              format: 'date',
+              description: '到期日期'
+            },
+            leaseDuration: {
+              type: 'integer',
+              description: '租赁期限（月）',
+              minimum: 1,
+              maximum: 120
+            },
+            paymentMethod: {
+              type: 'string',
+              enum: ['monthly', 'quarterly', 'semi_annually', 'annually'],
+              description: '付款方式'
+            },
+            paymentDay: {
+              type: 'integer',
+              description: '付款日期',
+              minimum: 1,
+              maximum: 31
+            },
+            status: {
+              type: 'string',
+              enum: ['draft', 'pending', 'active', 'expired', 'terminated', 'breached'],
+              description: '合同状态'
+            },
+            terms: {
+              type: 'object',
+              description: '合同条款（JSON格式）'
+            },
+            notes: {
+              type: 'string',
+              description: '备注信息'
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: '创建时间'
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: '更新时间'
+            }
+          }
+        },
         ApiResponse: {
           type: 'object',
           properties: {

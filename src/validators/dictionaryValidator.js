@@ -371,7 +371,7 @@ const getDictionaryItemListSchema = Joi.object({
  */
 const batchCreateItemsSchema = Joi.object({
   items: Joi.array()
-    .items(createDictionaryItemSchema.fork(['dictionaryCode'], (schema) => schema.forbidden()))
+    .items(createDictionaryItemSchema)
     .min(1)
     .max(100)
     .required()
