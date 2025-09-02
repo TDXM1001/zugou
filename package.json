@@ -16,6 +16,9 @@
     "db:seed": "sequelize-cli db:seed:all",
     "db:seed:undo": "sequelize-cli db:seed:undo:all",
     "db:reset": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "seed:demo": "node scripts/seed-data.js",
+    "seed:clean": "sequelize-cli db:seed:undo:all",
+    "setup:dev": "npm run db:migrate && npm run seed:demo",
     "build": "echo 'Build process not configured yet'"
   },
   "keywords": [
