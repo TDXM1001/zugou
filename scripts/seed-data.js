@@ -137,6 +137,10 @@ function runSeeders() {
     {
       file: '20241201000004-demo-property-amenities.js',
       description: '创建房源设施数据'
+    },
+    {
+      file: '20241201000005-demo-contracts.js',
+      description: '创建合同数据（8个不同状态的测试合同）'
     }
   ];
   

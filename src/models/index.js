@@ -5,6 +5,9 @@ const User = require('./User')
 const Property = require('./Property')
 const PropertyImage = require('./PropertyImage')
 const PropertyAmenity = require('./PropertyAmenity')
+const Contract = require('./Contract')
+const Dictionary = require('./Dictionary')
+const DictionaryItem = require('./DictionaryItem')
 
 /**
  * 模型关联定义
@@ -49,7 +52,7 @@ PropertyImage.belongsTo(Property, {
 
 // ==================== 房源与设施的关联 ====================
 
-// 房源可以有多个设施
+// 房源可以拥有多个设施
 Property.hasMany(PropertyAmenity, {
   foreignKey: 'propertyId',
   as: 'amenities',
@@ -61,6 +64,91 @@ Property.hasMany(PropertyAmenity, {
 PropertyAmenity.belongsTo(Property, {
   foreignKey: 'propertyId',
   as: 'property',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+})
+
+// ==================== 合同关联关系 ====================
+
+// 用户（房东）可以拥有多个合同
+User.hasMany(Contract, {
+  foreignKey: 'landlordId',
+  as: 'landlordContracts',
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+})
+
+// 用户（租客）可以拥有多个合同
+User.hasMany(Contract, {
+  foreignKey: 'tenantId',
+  as: 'tenantContracts',
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+})
+
+// 合同属于一个房东
+Contract.belongsTo(User, {
+  foreignKey: 'landlordId',
+  as: 'landlord',
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+})
+
+// 合同属于一个租客
+Contract.belongsTo(User, {
+  foreignKey: 'tenantId',
+  as: 'tenant',
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+})
+
+// 房源可以有多个合同（历史合同）
+Property.hasMany(Contract, {
+  foreignKey: 'propertyId',
+  as: 'contracts',
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+})
+
+// 合同属于一个房源
+Contract.belongsTo(Property, {
+  foreignKey: 'propertyId',
+  as: 'property',
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+})
+
+// ==================== 字典关联关系 ====================
+
+// 字典与字典项的关联
+Dictionary.hasMany(DictionaryItem, {
+  foreignKey: 'dictionaryCode',
+  sourceKey: 'code',
+  as: 'items',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+})
+
+// 字典项属于一个字典
+DictionaryItem.belongsTo(Dictionary, {
+  foreignKey: 'dictionaryCode',
+  targetKey: 'code',
+  as: 'dictionary',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+})
+
+// 字典项的自关联（父子关系）
+DictionaryItem.hasMany(DictionaryItem, {
+  foreignKey: 'parentId',
+  as: 'children',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+})
+
+DictionaryItem.belongsTo(DictionaryItem, {
+  foreignKey: 'parentId',
+  as: 'parent',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE'
 })
@@ -343,5 +431,8 @@ module.exports = {
   User,
   Property,
   PropertyImage,
-  PropertyAmenity
+  PropertyAmenity,
+  Contract,
+  Dictionary,
+  DictionaryItem
 }

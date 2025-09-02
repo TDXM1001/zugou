@@ -57,6 +57,7 @@ app.use('/api/properties', require('./routes/properties'))
 app.use('/api/contracts', require('./routes/contracts'))
 app.use('/api/payments', require('./routes/payments'))
 app.use('/api/statistics', require('./routes/statistics'))
+app.use('/api/dictionaries', require('./routes/dictionaries'))
 
 // 404处理
 app.use('*', (req, res) => {

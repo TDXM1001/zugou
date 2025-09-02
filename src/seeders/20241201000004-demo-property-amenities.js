@@ -6,10 +6,20 @@
  */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    // 动态获取房源ID
+    const properties = await queryInterface.sequelize.query(
+      "SELECT id FROM properties ORDER BY id ASC LIMIT 15",
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    
+    if (properties.length < 8) {
+      throw new Error('需要至少8个房源才能创建房源设施数据');
+    }
+    
     const propertyAmenities = [
       // 房源1的设施 - 朝阳区CBD核心地段精装两居室
       {
-        property_id: 1,
+        property_id: properties[0].id,
         amenity_name: '中央空调',
         amenity_type: 'appliance',
         description: '全屋中央空调系统，冬暖夏凉',
@@ -20,7 +30,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 1,
+        property_id: properties[0].id,
         amenity_name: '洗衣机',
         amenity_type: 'appliance',
         description: '海尔全自动洗衣机',
@@ -31,7 +41,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 1,
+        property_id: properties[0].id,
         amenity_name: '冰箱',
         amenity_type: 'appliance',
         description: '双开门大容量冰箱',
@@ -42,7 +52,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 1,
+        property_id: properties[0].id,
         amenity_name: '电视',
         amenity_type: 'appliance',
         description: '55寸4K智能电视',
@@ -53,8 +63,8 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 1,
-        amenity_name: 'WiFi',
+        property_id: properties[0].id,
+        amenity_name: '高速WiFi',
         amenity_type: 'utility',
         description: '100M光纤宽带',
         is_available: true,
@@ -64,135 +74,23 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 1,
-        amenity_name: '沙发',
-        amenity_type: 'furniture',
-        description: '真皮三人沙发',
+        property_id: properties[0].id,
+        amenity_name: '地铁站',
+        amenity_type: 'transport',
+        description: '步行2分钟到地铁站',
         is_available: true,
-        icon: 'sofa',
-        sort_order: 6,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 1,
-        amenity_name: '餐桌',
-        amenity_type: 'furniture',
-        description: '实木四人餐桌',
-        is_available: true,
-        icon: 'dining-table',
-        sort_order: 7,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 1,
-        amenity_name: '衣柜',
-        amenity_type: 'furniture',
-        description: '大容量整体衣柜',
-        is_available: true,
-        icon: 'wardrobe',
-        sort_order: 8,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 1,
-        amenity_name: '门禁系统',
-        amenity_type: 'security',
-        description: '智能门禁卡系统',
-        is_available: true,
-        icon: 'security',
-        sort_order: 9,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 1,
-        amenity_name: '电梯',
-        amenity_type: 'utility',
-        description: '高速电梯直达',
-        is_available: true,
-        icon: 'elevator',
-        sort_order: 10,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      
-      // 房源2的设施 - 海淀区学区房三居室
-      {
-        property_id: 2,
-        amenity_name: '地暖',
-        amenity_type: 'utility',
-        description: '全屋地暖系统',
-        is_available: true,
-        icon: 'heating',
-        sort_order: 1,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 2,
-        amenity_name: '洗衣机',
-        amenity_type: 'appliance',
-        description: '滚筒洗衣机',
-        is_available: true,
-        icon: 'washing-machine',
-        sort_order: 2,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 2,
-        amenity_name: '冰箱',
-        amenity_type: 'appliance',
-        description: '三门冰箱',
-        is_available: true,
-        icon: 'refrigerator',
-        sort_order: 3,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 2,
-        amenity_name: 'WiFi',
-        amenity_type: 'utility',
-        description: '200M光纤宽带',
-        is_available: true,
-        icon: 'wifi',
-        sort_order: 4,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 2,
-        amenity_name: '书桌',
-        amenity_type: 'furniture',
-        description: '儿童学习桌',
-        is_available: true,
-        icon: 'desk',
-        sort_order: 5,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 2,
-        amenity_name: '停车位',
-        amenity_type: 'service',
-        description: '地下停车位',
-        is_available: true,
-        icon: 'parking',
+        icon: 'subway',
         sort_order: 6,
         created_at: new Date(),
         updated_at: new Date()
       },
       
-      // 房源3的设施 - 西城区金融街高端公寓
+      // 房源2的设施 - 海淀区学区房三居室出租
       {
-        property_id: 3,
+        property_id: properties[1].id,
         amenity_name: '中央空调',
         amenity_type: 'appliance',
-        description: '大金中央空调',
+        description: '全屋中央空调系统',
         is_available: true,
         icon: 'air-conditioner',
         sort_order: 1,
@@ -200,75 +98,42 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 3,
-        amenity_name: '新风系统',
-        amenity_type: 'utility',
-        description: '全屋新风净化系统',
+        property_id: properties[1].id,
+        amenity_name: '书房',
+        amenity_type: 'other',
+        description: '独立书房，适合学习办公',
         is_available: true,
-        icon: 'air-purifier',
+        icon: 'study-room',
         sort_order: 2,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 3,
-        amenity_name: '洗碗机',
-        amenity_type: 'appliance',
-        description: '嵌入式洗碗机',
+        property_id: properties[1].id,
+        amenity_name: '学区房',
+        amenity_type: 'other',
+        description: '周边名校云集',
         is_available: true,
-        icon: 'dishwasher',
+        icon: 'school',
         sort_order: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 3,
-        amenity_name: '智能马桶',
-        amenity_type: 'appliance',
-        description: 'TOTO智能马桶',
+        property_id: properties[1].id,
+        amenity_name: '儿童游乐区',
+        amenity_type: 'entertainment',
+        description: '小区内儿童游乐设施',
         is_available: true,
-        icon: 'toilet',
+        icon: 'playground',
         sort_order: 4,
         created_at: new Date(),
         updated_at: new Date()
       },
-      {
-        property_id: 3,
-        amenity_name: '健身房',
-        amenity_type: 'entertainment',
-        description: '小区健身房',
-        is_available: true,
-        icon: 'gym',
-        sort_order: 5,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 3,
-        amenity_name: '游泳池',
-        amenity_type: 'entertainment',
-        description: '室内恒温游泳池',
-        is_available: true,
-        icon: 'swimming-pool',
-        sort_order: 6,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 3,
-        amenity_name: '礼宾服务',
-        amenity_type: 'service',
-        description: '24小时礼宾服务',
-        is_available: true,
-        icon: 'concierge',
-        sort_order: 7,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
       
-      // 房源4的设施 - 浦东新区陆家嘴金融区精品一居
+      // 房源3的设施 - 西城区金融街高端公寓
       {
-        property_id: 4,
+        property_id: properties[2].id,
         amenity_name: '智能家居',
         amenity_type: 'appliance',
         description: '全屋智能家居系统',
@@ -279,56 +144,102 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 4,
-        amenity_name: '洗衣机',
-        amenity_type: 'appliance',
-        description: '洗烘一体机',
+        property_id: properties[2].id,
+        amenity_name: '健身房',
+        amenity_type: 'entertainment',
+        description: '小区配套健身房',
         is_available: true,
-        icon: 'washing-machine',
+        icon: 'gym',
         sort_order: 2,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 4,
-        amenity_name: '微波炉',
-        amenity_type: 'appliance',
-        description: '嵌入式微波炉',
+        property_id: properties[2].id,
+        amenity_name: '游泳池',
+        amenity_type: 'entertainment',
+        description: '室内恒温游泳池',
         is_available: true,
-        icon: 'microwave',
+        icon: 'swimming-pool',
         sort_order: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 4,
-        amenity_name: 'WiFi',
-        amenity_type: 'utility',
-        description: '千兆光纤',
+        property_id: properties[2].id,
+        amenity_name: '24小时礼宾服务',
+        amenity_type: 'service',
+        description: '专业礼宾服务团队',
         is_available: true,
-        icon: 'wifi',
+        icon: 'concierge',
         sort_order: 4,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 4,
-        amenity_name: '地铁',
-        amenity_type: 'transport',
-        description: '地铁2号线陆家嘴站',
+        property_id: properties[2].id,
+        amenity_name: '地下车库',
+        amenity_type: 'other',
+        description: '专属地下停车位',
         is_available: true,
-        icon: 'subway',
+        icon: 'parking',
         sort_order: 5,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      
+      // 房源4的设施 - 浦东新区陆家嘴金融区精品一居
+      {
+        property_id: properties[3].id,
+        amenity_name: '智能家居',
+        amenity_type: 'appliance',
+        description: '智能家居控制系统',
+        is_available: true,
+        icon: 'smart-home',
+        sort_order: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        property_id: properties[3].id,
+        amenity_name: '江景阳台',
+        amenity_type: 'other',
+        description: '俯瞰黄浦江美景',
+        is_available: true,
+        icon: 'balcony',
+        sort_order: 2,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        property_id: properties[3].id,
+        amenity_name: '会议室',
+        amenity_type: 'other',
+        description: '小区商务会议室',
+        is_available: true,
+        icon: 'meeting-room',
+        sort_order: 3,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        property_id: properties[3].id,
+        amenity_name: '金融区',
+        amenity_type: 'other',
+        description: '陆家嘴金融中心',
+        is_available: true,
+        icon: 'financial-district',
+        sort_order: 4,
         created_at: new Date(),
         updated_at: new Date()
       },
       
       // 房源5的设施 - 徐汇区梧桐叶语花园洋房
       {
-        property_id: 5,
+        property_id: properties[4].id,
         amenity_name: '私人花园',
         amenity_type: 'other',
-        description: '200平米私人花园',
+        description: '独立私人花园',
         is_available: true,
         icon: 'garden',
         sort_order: 1,
@@ -336,10 +247,10 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 5,
+        property_id: properties[4].id,
         amenity_name: '车库',
-        amenity_type: 'service',
-        description: '双车位车库',
+        amenity_type: 'other',
+        description: '独立车库',
         is_available: true,
         icon: 'garage',
         sort_order: 2,
@@ -347,89 +258,77 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 5,
-        amenity_name: '壁炉',
-        amenity_type: 'appliance',
-        description: '欧式壁炉',
+        property_id: properties[4].id,
+        amenity_name: '欧式装修',
+        amenity_type: 'other',
+        description: '精美欧式装修风格',
         is_available: true,
-        icon: 'fireplace',
+        icon: 'european-style',
         sort_order: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 5,
-        amenity_name: '酒窖',
+        property_id: properties[4].id,
+        amenity_name: '名校区域',
         amenity_type: 'other',
-        description: '地下酒窖',
+        description: '临近上海交大、复旦',
         is_available: true,
-        icon: 'wine-cellar',
+        icon: 'university',
         sort_order: 4,
         created_at: new Date(),
         updated_at: new Date()
       },
-      {
-        property_id: 5,
-        amenity_name: '保姆房',
-        amenity_type: 'other',
-        description: '独立保姆房',
-        is_available: true,
-        icon: 'room',
-        sort_order: 5,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
       
-      // 为其他房源添加基础设施
-      // 房源6 - 静安区南京西路商圈两居室
+      // 房源6的设施 - 静安区南京西路商圈两居室
       {
-        property_id: 6,
-        amenity_name: '空调',
-        amenity_type: 'appliance',
-        description: '分体式空调',
+        property_id: properties[5].id,
+        amenity_name: '精装修',
+        amenity_type: 'other',
+        description: '现代精装修',
         is_available: true,
-        icon: 'air-conditioner',
+        icon: 'renovation',
         sort_order: 1,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 6,
-        amenity_name: 'WiFi',
-        amenity_type: 'utility',
-        description: '100M宽带',
+        property_id: properties[5].id,
+        amenity_name: '商圈中心',
+        amenity_type: 'other',
+        description: '南京西路商圈核心',
         is_available: true,
-        icon: 'wifi',
+        icon: 'shopping-center',
         sort_order: 2,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 6,
-        amenity_name: '洗衣机',
-        amenity_type: 'appliance',
-        description: '全自动洗衣机',
+        property_id: properties[5].id,
+        amenity_name: '地铁直达',
+        amenity_type: 'transport',
+        description: '地铁2号线直达',
         is_available: true,
-        icon: 'washing-machine',
+        icon: 'subway',
         sort_order: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 6,
-        amenity_name: '地铁',
-        amenity_type: 'transport',
-        description: '地铁2号线南京西路站',
+        property_id: properties[5].id,
+        amenity_name: '高端商场',
+        amenity_type: 'other',
+        description: '久光百货、恒隆广场',
         is_available: true,
-        icon: 'subway',
+        icon: 'mall',
         sort_order: 4,
         created_at: new Date(),
         updated_at: new Date()
       },
       
-      // 房源7 - 天河区珠江新城CBD公寓
+      // 房源7的设施 - 天河区珠江新城CBD公寓
       {
-        property_id: 7,
+        property_id: properties[6].id,
         amenity_name: '中央空调',
         amenity_type: 'appliance',
         description: '中央空调系统',
@@ -440,184 +339,81 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        property_id: 7,
+        property_id: properties[6].id,
         amenity_name: '地暖',
-        amenity_type: 'utility',
+        amenity_type: 'appliance',
         description: '地暖系统',
         is_available: true,
-        icon: 'heating',
+        icon: 'floor-heating',
         sort_order: 2,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 7,
-        amenity_name: 'WiFi',
-        amenity_type: 'utility',
-        description: '200M光纤',
+        property_id: properties[6].id,
+        amenity_name: 'CBD位置',
+        amenity_type: 'other',
+        description: '珠江新城CBD核心',
         is_available: true,
-        icon: 'wifi',
+        icon: 'cbd',
         sort_order: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 7,
-        amenity_name: '游泳池',
-        amenity_type: 'entertainment',
-        description: '小区游泳池',
-        is_available: true,
-        icon: 'swimming-pool',
-        sort_order: 4,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 7,
+        property_id: properties[6].id,
         amenity_name: '健身房',
         amenity_type: 'entertainment',
         description: '小区健身房',
         is_available: true,
         icon: 'gym',
-        sort_order: 5,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      
-      // 房源8 - 越秀区东山口历史文化区复式
-      {
-        property_id: 8,
-        amenity_name: '空调',
-        amenity_type: 'appliance',
-        description: '分体式空调',
-        is_available: false, // 维护中
-        icon: 'air-conditioner',
-        sort_order: 1,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 8,
-        amenity_name: 'WiFi',
-        amenity_type: 'utility',
-        description: '100M宽带',
-        is_available: true,
-        icon: 'wifi',
-        sort_order: 2,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 8,
-        amenity_name: '复古家具',
-        amenity_type: 'furniture',
-        description: '民国风复古家具',
-        is_available: true,
-        icon: 'furniture',
-        sort_order: 3,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      
-      // 房源9 - 南山区科技园创新大厦公寓
-      {
-        property_id: 9,
-        amenity_name: '智能家居',
-        amenity_type: 'appliance',
-        description: '智能家居系统',
-        is_available: true,
-        icon: 'smart-home',
-        sort_order: 1,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 9,
-        amenity_name: 'WiFi',
-        amenity_type: 'utility',
-        description: '千兆光纤',
-        is_available: true,
-        icon: 'wifi',
-        sort_order: 2,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 9,
-        amenity_name: '办公桌',
-        amenity_type: 'furniture',
-        description: '人体工学办公桌',
-        is_available: true,
-        icon: 'desk',
-        sort_order: 3,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 9,
-        amenity_name: '地铁',
-        amenity_type: 'transport',
-        description: '地铁1号线高新园站',
-        is_available: true,
-        icon: 'subway',
         sort_order: 4,
         created_at: new Date(),
         updated_at: new Date()
       },
       
-      // 房源10 - 福田区中心区金融街豪华公寓
+      // 房源8的设施 - 越秀区东山口历史文化区复式
       {
-        property_id: 10,
-        amenity_name: '中央空调',
-        amenity_type: 'appliance',
-        description: '大金中央空调',
+        property_id: properties[7].id,
+        amenity_name: '历史建筑',
+        amenity_type: 'other',
+        description: '民国风情建筑',
         is_available: true,
-        icon: 'air-conditioner',
+        icon: 'historical-building',
         sort_order: 1,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 10,
-        amenity_name: '新风系统',
-        amenity_type: 'utility',
-        description: '全屋新风系统',
+        property_id: properties[7].id,
+        amenity_name: '复式结构',
+        amenity_type: 'other',
+        description: '复式公寓设计',
         is_available: true,
-        icon: 'air-purifier',
+        icon: 'duplex',
         sort_order: 2,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 10,
-        amenity_name: '智能马桶',
-        amenity_type: 'appliance',
-        description: 'TOTO智能马桶',
+        property_id: properties[7].id,
+        amenity_name: '文化区域',
+        amenity_type: 'other',
+        description: '东山口历史文化保护区',
         is_available: true,
-        icon: 'toilet',
+        icon: 'cultural-area',
         sort_order: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
-        property_id: 10,
-        amenity_name: '地铁',
-        amenity_type: 'transport',
-        description: '地铁1号线大剧院站',
+        property_id: properties[7].id,
+        amenity_name: '梧桐大道',
+        amenity_type: 'other',
+        description: '梧桐成荫的街道',
         is_available: true,
-        icon: 'subway',
+        icon: 'tree-lined-street',
         sort_order: 4,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        property_id: 10,
-        amenity_name: '健身房',
-        amenity_type: 'entertainment',
-        description: '高端健身房',
-        is_available: true,
-        icon: 'gym',
-        sort_order: 5,
         created_at: new Date(),
         updated_at: new Date()
       }

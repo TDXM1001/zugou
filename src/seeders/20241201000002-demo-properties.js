@@ -6,10 +6,22 @@
  */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    // 动态获取房东用户ID
+    const landlords = await queryInterface.sequelize.query(
+      "SELECT id, username FROM users WHERE role = 'landlord' ORDER BY id ASC",
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    
+    if (landlords.length < 5) {
+      throw new Error('需要至少5个房东用户才能创建房源数据');
+    }
+    
+    const [landlord1, landlord2, landlord3, landlord4, landlord5] = landlords;
+    
     const properties = [
       // 北京房源
       {
-        landlord_id: 2, // 张伟
+        landlord_id: landlord1.id, // landlord1
         title: '朝阳区CBD核心地段精装两居室',
         description: '位于朝阳区CBD核心地段，交通便利，周边配套齐全。房屋精装修，家具家电齐全，拎包入住。楼下就是地铁站，步行2分钟到达。小区环境优美，物业管理完善，24小时安保。适合白领居住，近国贸、建外SOHO等商务区。',
         property_type: 'apartment',
@@ -33,7 +45,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 2, // 张伟
+        landlord_id: landlord1.id, // landlord1
         title: '海淀区学区房三居室出租',
         description: '海淀区优质学区房，临近中关村，周边名校云集。房屋南北通透，采光极佳，装修温馨。小区绿化率高，环境安静，适合有孩子的家庭居住。交通便利，多条公交线路，地铁4号线直达。',
         property_type: 'apartment',
@@ -57,7 +69,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 3, // 李明
+        landlord_id: landlord2.id, // landlord2
         title: '西城区金融街高端公寓',
         description: '西城区金融街核心位置，高端商务公寓。房屋装修豪华，配备高端家具家电。楼下即是金融街购物中心，生活便利。适合金融从业者或高端商务人士。24小时礼宾服务，健身房、游泳池等配套设施齐全。',
         property_type: 'apartment',
@@ -83,7 +95,7 @@ module.exports = {
       
       // 上海房源
       {
-        landlord_id: 4, // 王芳
+        landlord_id: landlord3.id, // landlord3
         title: '浦东新区陆家嘴金融区精品一居',
         description: '浦东陆家嘴金融区核心地段，俯瞰黄浦江美景。房屋现代简约装修，配备智能家居系统。楼下即是地铁2号线陆家嘴站，交通极其便利。周边银行、证券公司林立，适合金融从业者。小区配备健身房、会议室等商务设施。',
         property_type: 'apartment',
@@ -107,7 +119,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 4, // 王芳
+        landlord_id: landlord3.id, // landlord3
         title: '徐汇区梧桐叶语花园洋房',
         description: '徐汇区高端花园洋房，独栋别墅出租。房屋欧式装修风格，带私人花园和车库。周边梧桐成荫，环境优雅安静。临近上海交大、复旦等知名学府。适合高端家庭或外籍人士居住。',
         property_type: 'villa',
@@ -131,7 +143,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 5, // 陈军
+        landlord_id: landlord4.id, // landlord4
         title: '静安区南京西路商圈两居室',
         description: '静安区南京西路商圈核心位置，购物娱乐便利。房屋精装修，采光良好，家具家电齐全。楼下即是地铁2号线南京西路站，出行便利。周边久光百货、恒隆广场等高端商场。适合年轻白领或小夫妻居住。',
         property_type: 'apartment',
@@ -157,7 +169,7 @@ module.exports = {
       
       // 广州房源
       {
-        landlord_id: 5, // 陈军
+        landlord_id: landlord4.id, // landlord4
         title: '天河区珠江新城CBD公寓',
         description: '天河区珠江新城CBD核心地段，广州国际金融中心旁。房屋现代装修，配备中央空调和地暖。楼下即是地铁3号线珠江新城站，交通便利。周边高端写字楼林立，适合商务人士。小区配备游泳池、健身房等设施。',
         property_type: 'apartment',
@@ -181,7 +193,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 6, // 刘霞
+        landlord_id: landlord5.id, // landlord5
         title: '越秀区东山口历史文化区复式',
         description: '越秀区东山口历史文化保护区，民国风情复式公寓。房屋保留历史建筑特色，同时配备现代化设施。周边梧桐成荫，文化氛围浓厚。临近地铁1号线东山口站，交通便利。适合喜欢历史文化的租客。',
         property_type: 'loft',
@@ -207,7 +219,7 @@ module.exports = {
       
       // 深圳房源
       {
-        landlord_id: 6, // 刘霞
+        landlord_id: landlord5.id, // landlord5
         title: '南山区科技园创新大厦公寓',
         description: '南山区科技园核心地段，毗邻腾讯、华为等知名企业。房屋现代简约装修，配备高速网络和智能家居。楼下即是地铁1号线高新园站，通勤便利。周边餐饮娱乐丰富，适合IT从业者。',
         property_type: 'apartment',
@@ -231,7 +243,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 2, // 张伟
+        landlord_id: landlord1.id, // landlord1
         title: '福田区中心区金融街豪华公寓',
         description: '福田区中心区金融街，深圳CBD核心位置。房屋豪华装修，配备进口家具家电。楼下即是地铁1号线大剧院站，交通极其便利。周边平安金融中心、京基100等地标建筑。适合高端商务人士。',
         property_type: 'apartment',
@@ -257,7 +269,7 @@ module.exports = {
       
       // 杭州房源
       {
-        landlord_id: 3, // 李明
+        landlord_id: landlord2.id, // landlord2
         title: '西湖区文三路互联网大厦公寓',
         description: '西湖区文三路互联网产业园区，毗邻阿里巴巴、网易等互联网企业。房屋现代装修，配备高速宽带和办公设施。交通便利，多条公交线路直达。周边餐饮丰富，生活便利。适合互联网从业者。',
         property_type: 'apartment',
@@ -281,7 +293,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 4, // 王芳
+        landlord_id: landlord3.id, // landlord3
         title: '滨江区奥体中心现代公寓',
         description: '滨江区奥体中心附近，现代化高层公寓。房屋精装修，配备中央空调和新风系统。小区环境优美，配套设施完善。临近地铁6号线奥体中心站，交通便利。周边商场、餐厅、健身房等生活设施齐全。',
         property_type: 'apartment',
@@ -307,7 +319,7 @@ module.exports = {
       
       // 成都房源
       {
-        landlord_id: 5, // 陈军
+        landlord_id: landlord4.id, // landlord4
         title: '锦江区春熙路商圈时尚公寓',
         description: '锦江区春熙路商圈核心位置，成都最繁华的商业区。房屋时尚装修，配备现代化家具家电。楼下即是地铁2号线春熙路站，交通极其便利。周边IFS、太古里等高端商场。适合年轻时尚人群。',
         property_type: 'apartment',
@@ -331,7 +343,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        landlord_id: 6, // 刘霞
+        landlord_id: landlord5.id, // landlord5
         title: '高新区天府软件园创业公寓',
         description: '高新区天府软件园，成都高新技术产业开发区核心。房屋现代简约装修，配备高速网络和办公设施。周边科技企业云集，创业氛围浓厚。交通便利，地铁1号线直达市中心。适合创业者和IT从业者。',
         property_type: 'studio',
@@ -357,7 +369,7 @@ module.exports = {
       
       // 武汉房源
       {
-        landlord_id: 3, // 李明
+        landlord_id: landlord2.id, // landlord2
         title: '江汉区汉口江滩景观房',
         description: '江汉区汉口江滩附近，长江景观房。房屋装修典雅，配备观景阳台，可俯瞰长江美景。周边历史文化底蕴深厚，江汉路步行街近在咫尺。交通便利，地铁2号线江汉路站步行可达。适合喜欢江景的租客。',
         property_type: 'apartment',
